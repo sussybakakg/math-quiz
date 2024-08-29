@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Learning Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        #game-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+        #question, #result, #answer-input, #submit-answer {
+            margin-top: 20px;
+        }
+        #result {
+            font-weight: bold;
+            color: #28a745;
+        }
+        #submit-answer {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Math Learning Game</h1>
+        <p>Select a topic to start:</p>
+        <button onclick="startGame('algebra')">Algebra</button>
+        <button onclick="startGame('geometry')">Geometry</button>
+        <button onclick="startGame('statistics')">Statistics</button>
+
+        <div id="game-content">
+            <!-- Question will appear here -->
+        </div>
+    </div>
+
+    <script>
+        // Questions data
+        const questions = {
+            algebra: [
+                { question: "Solve for x: 2x + 5 = 13", answer: "4" },
+                { question: "If y = 3x + 2 and x = 4, what is y?", answer: "14" },
+                { question: "Factorize: x^2 - 5x + 6", answer: "(x-2)(x-3)" }
+            ],
+            geometry: [
+                { question: "What is the area of a circle with radius 3?", answer: "28.27" },
+                { question: "Find the perimeter of a rectangle with length 5 and width 3.", answer: "16" },
+                { question: "What is the volume of a cube with side length 4?", answer: "64" }
+            ],
+            statistics: [
+                { question: "What is the mean of these numbers: 4, 8, 6, 5?", answer: "5.75" },
+                { question: "If the mode of a set is 7, what does it mean?", answer: "Most frequent number is 7" },
+                { question: "What is the range of these numbers: 10, 4, 7, 2?", answer: "8" }
+            ]
+        };
+
+        let currentTopic = '';
+        let currentQuestionIndex = 0;
+
+        function startGame(topic) {
+            currentTopic = topic;
+            currentQuestionIndex = Math.floor(Math.random() * questions[topic].length);
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentTopic][currentQuestionIndex];
+            document.getElementById('game-content').innerHTML = `
+                <div id="question">${question.question}</div>
+                <input type="text" id="answer-input" placeholder="Type your answer">
+                <button id="submit-answer" onclick="checkAnswer()">Submit Answer</button>
+                <div id="result"></div>
+            `;
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer-input').value.trim();
+            const correctAnswer = questions[currentTopic][currentQuestionIndex].answer;
+            const result = document.getElementById('result');
+
+            if (userAnswer === correctAnswer) {
+                result.textContent = 'Correct! Great job!';
+                result.style.color = 'green';
+            } else {
+                result.textContent = `Wrong! The correct answer is ${correctAnswer}.`;
+                result.style.color = 'red';
+            }
+
+            setTimeout(() => startGame(currentTopic), 3000); // Wait 3 seconds, then show a new question
+        }
+    </script>
+</body>
+</html>
